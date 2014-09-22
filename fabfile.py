@@ -164,7 +164,6 @@ def update_code():
             run('git checkout {}'.format(REPO_BRANCH))
             run('git pull')
 
-
 @task
 def bootstrap():
     """Bootstrap machine to run fabric tasks"""
