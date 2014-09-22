@@ -85,4 +85,11 @@ class colab (
     directory => '/home/colab/',
     user      => 'colab',
   }
+
+  nginx::resource::location { 'gitlab':
+    ensure         => present,
+    vhost          => 'colab',
+    location       => '/gitlab/assets/',
+    location_alias => '/opt/gitlab/embedded/service/gitlab-rails/public/assets/',
+  }
 }
