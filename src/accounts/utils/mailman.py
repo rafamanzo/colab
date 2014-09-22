@@ -52,7 +52,7 @@ def address_lists(address, description=''):
 
     try:
         lists = requests.get(url, timeout=TIMEOUT, params=params)
-    except requests.exceptions.RequestException:
+    except:
         return []
 
     return lists.json()
