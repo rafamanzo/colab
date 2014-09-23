@@ -5,7 +5,7 @@ locale::language: pt_BR
 
 timezone::timezone: America/Sao_Paulo
 
-postfix::admin_email: test@test.test
+postfix::admin_email: paulo@softwarelivre.org
 
 postgresql::globals::version: '9.3'
 postgresql::globals::manage_package_repo: 'true'
@@ -16,12 +16,8 @@ nginx::access_log: '/var/log/nginx/access.log'
 
 colab::mailman_archive_path: '/mnt/mailman/archives/'
 colab::mailman_exclude_lists:
-  - saberes-divulgacao
-  - pml
   - mailman
-  - lexml-anuncions
 colab::hostnames: 
-  - colab.interlegis.leg.br
-  - colab.interlegis.gov.br
+  - beta.softwarepublico.gov.br
   - localhost
-colab::solr_project_path: '/home/colab/solr-4.6.1/colab'
+colab::solr_project_path: '/var/lib/mailman/archives/private/'
