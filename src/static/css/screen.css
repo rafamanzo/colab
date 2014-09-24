@@ -24,6 +24,16 @@ li hr {
     margin-left: 10px;
 }
 
+.navbar-brand img {
+    width: 192px;
+    height: 40px;
+}
+
+.main-logo {
+    width: 374px;
+    height: 78px;
+}
+
 #user-menu .wrapper {
     padding: 3px 10px;
     white-space: nowrap;
