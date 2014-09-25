@@ -86,10 +86,14 @@ class colab (
     user      => 'colab',
   }
 
+  /* SPB specifics */
+  include nginx
+
   nginx::resource::location { 'gitlab':
     ensure         => present,
     vhost          => 'colab',
     location       => '/gitlab/assets/',
     location_alias => '/opt/gitlab/embedded/service/gitlab-rails/public/assets/',
   }
+  /* end - SPB specifics */
 }
