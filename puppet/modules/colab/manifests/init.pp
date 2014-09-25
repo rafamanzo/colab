@@ -95,5 +95,12 @@ class colab (
     location       => '/gitlab/assets/',
     location_alias => '/opt/gitlab/embedded/service/gitlab-rails/public/assets/',
   }
+
+  cron { 'fix-mailman-permissions':
+    command => "/usr/lib/mailman/bin/check_perms -f &> /dev/null",
+    hour    => '*',
+    minute  => '*',
+    user    => root,
+  }
   /* end - SPB specifics */
 }
