@@ -107,7 +107,6 @@
                   <li><a href="/gitlab/public/projects">{% trans "Public Projects" %}</a></li>
                   {% if user.is_active %}
                     <li><a href="/gitlab/profile">{% trans "Profile" %}</a></li>
-                    <li><a href="/gitlab/projects/new">{% trans "New Project" %}</a></li>
                     <li><a href="/gitlab/dashboard/projects">{% trans "Projects" %}</a></li>
                     <li><a href="/gitlab/profile/groups">{% trans "Groups" %}</a></li>
                     <li><a href="/gitlab/dashboard/issues">{% trans "Issues" %}</a></li>
@@ -128,8 +127,8 @@
                     </a>
                   </li>
                   <li>
-                    <a href="/social/search/communities">
-                      {% trans "Communities" %} 
+                    <a href="/social/search/software_infos">
+                      {% trans "Softwares" %} 
                     </a>
                   </li>
                   {% if user.is_active %}
