@@ -55,7 +55,6 @@
 
   <!-- data-no-turbolink will disable Rails TurboLinks for all pages under Colab -->
   <body class="container" data-no-turbolink>
-
     {% browserid_info %}
 
     {% block ribbon %}
@@ -70,16 +69,6 @@
 
     {% block navbar %}
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-
-      <!-- Barra Brasil - Start -->
-      <div id="barra-brasil" style="background:#7F7F7F; height: 20px; padding:0 0 0 10px;display:block;"> 
-          <ul id="menu-barra-temp" style="list-style:none;">
-              <li style="display:inline; float:left;padding-right:10px; margin-right:10px; border-right:1px solid #EDEDED"><a href="http://brasil.gov.br" style="font-family:sans,sans-serif; text-decoration:none; color:white;">Portal do Governo Brasileiro</a></li> 
-              <li><a style="font-family:sans,sans-serif; text-decoration:none; color:white;" href="http://epwg.governoeletronico.gov.br/barra/atualize.html">Atualize sua Barra de Governo</a></li>
-          </ul>
-      </div>
-      <!-- Barra Brasil - End -->
-
       <div class="container">
         <div class="navbar-header">
 
@@ -291,8 +280,6 @@
   <script src="https://login.persona.org/include.js"></script>
   <script src="{% static 'browserid/api.js' %}"></script>
   <script src="{% static 'browserid/browserid.js' %}"></script>
-
-  <script defer="defer" async="async" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
 
   {% block footer_js %}{% endblock %}
   </body>
