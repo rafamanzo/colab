@@ -1,20 +1,25 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE rules [
+<!ENTITY proxybase SYSTEM "../proxybase/diazobase.xml">
+]>
+
 <rules
     xmlns="http://namespaces.plone.org/diazo"
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <before theme-children="/html/head" content-children="/html/head" />
-    <before css:theme-children="#main-content" css:content-children="body" />
+  <!-- Includes base proxybase/diazobase.xml rules -->
+  &proxybase;
 
-    <merge attributes="class" css:theme="body" css:content="body" />
+  <!-- Noosfero specific rules -->
+  <drop css:theme="link[href^='/static/third-party/bootstrap/css/bootstrap.min']" />
+  <drop css:theme="link[href^='/static/third-party/font-awesome/css/font-awesome.min']" />
+  <drop css:theme="link[href^='/static/css/screen']" />
+  <drop theme="/html/head/script" />
+  <drop css:content="#barra-brasil" />
+  <drop css:content="#user" />
+  <drop css:content="#theme-footer" />
+  <drop css:content="#homepage-link" />
+  <drop css:content=".header-content" />
 
-    <drop css:theme="link[href^='/static/third-party/bootstrap/css/bootstrap.min']" />
-    <drop css:theme="link[href^='/static/third-party/font-awesome/css/font-awesome.min']" />
-    <drop css:theme="link[href^='/static/css/screen']" />
-    <drop theme="/html/head/script" />
-    <drop css:content="#barra-brasil" />
-    <drop css:content="#user" />
-    <drop css:content="#theme-footer" />
-    <drop css:content="#homepage-link" />
-    <drop css:content=".header-content" />
 </rules>

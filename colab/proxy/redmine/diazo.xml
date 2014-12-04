@@ -1,11 +1,20 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE rules [
+<!ENTITY proxybase SYSTEM "../proxybase/diazobase.xml">
+]>
+
 <rules
     xmlns="http://namespaces.plone.org/diazo"
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <before theme-children="/html/head" content-children="/html/head" />
-    <before css:theme-children="#main-content" css:content-children="body" />
+  <!-- Includes base proxybase/diazobase.xml rules -->
+  &proxybase;
 
-    <merge attributes="class" css:theme="body" css:content="body" />
-    <drop css:content="#top-panel" />
+  <!-- Redmine specific rules -->
+  <before theme-children="/html/head" content-children="/html/head" />
+  <before css:theme-children="#main-content" css:content-children="body" />
+
+  <merge attributes="class" css:theme="body" css:content="body" />
+  <drop css:content="#top-panel" />
 </rules>

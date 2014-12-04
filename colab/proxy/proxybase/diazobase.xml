@@ -1,0 +1,14 @@
+<!--
+  This file will be included as a base rules for all diazo rules.
+  e.g.: The file proxy/noosfero/diazo.xml the first lines indicates this source file and this code will be replaced in &proxybase; 
+-->
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <before theme-children="/html/head" content-children="/html/head" />
+    <before css:theme-children="#main-content" css:content-children="body" />
+
+    <merge attributes="class" css:theme="body" css:content="body" />
+</rules>
