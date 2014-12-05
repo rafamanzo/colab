@@ -1,5 +1,6 @@
 
 from ..utils.views import ColabProxyView
+from django.conf import settings
 
 
 class GitlabProxyView(ColabProxyView):

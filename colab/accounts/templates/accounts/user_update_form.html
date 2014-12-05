@@ -104,7 +104,7 @@ $(function() {
 
 
 {% block main-content %}
-
+<div class="colab-style">
   <div class="col-lg-12">
     {% with user_.first_name as firstname %}
     <h2>{% trans 'profile information'|title %}</h2>
@@ -218,4 +218,5 @@ $(function() {
       </div>
     </div>
   </form>
+</div>
 {% endblock %}

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block feedzilla_content %}
-
+<div class="colab-style">
 {% for post in page.object_list %}
   {% include 'feedzilla/_post_template.html' %}
   <hr>
@@ -16,5 +16,5 @@
 {% endfor %}
 
 {% include "common/pagination.html" %}
-
+</div>
 {% endblock %}

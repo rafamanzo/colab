@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block feedzilla_content %}
-
+<div class="colab-style">
 <div class="col-lg-9">
   <h3>{% block title %}{% blocktrans %}Posts with &laquo;{{ tag }}&raquo; label{% endblocktrans %}{% endblock title %}</h3>
   <hr>
@@ -15,5 +15,6 @@
   {% else %}
       <p>{% trans "No posts with such label" %}</p>
   {% endif %}
+</div>
 </div>
 {% endblock %}

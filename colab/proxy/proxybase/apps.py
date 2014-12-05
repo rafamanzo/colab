@@ -1,7 +1,4 @@
+from django.apps import AppConfig
 
-from ..utils.apps import ColabProxiedAppConfig
-
-
-class ProxyBaseAppConfig(ColabProxiedAppConfig):
-    name = 'colab.proxy.proxybase'
-    verbose_name = 'Proxybase Proxy'
+class ColabProxiedAppConfig(AppConfig):
+    colab_proxied_app = True

@@ -2,6 +2,7 @@
 {% load browserid i18n %}
 
 {% block main-content %}
+  <div class="colab-style">
   <br><br><br>
   <div class="col-lg-12 text-center">
     <p>{% trans 'To login please click in the link below:'%}</p>
@@ -9,4 +10,5 @@
     {% browserid_login text=login_text link_class='btn btn-primary btn-lg' %}
   </div>
   <br><br><br>
+  </div>
 {% endblock %}

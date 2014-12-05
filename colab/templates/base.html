@@ -17,7 +17,10 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/fav.ico' %}">
 
-    <link rel="stylesheet" href="{% static 'third-party/bootstrap/css/bootstrap.min.css' %}" type="text/css" media="screen, projection" />
+    <link href="{% static 'third-party/bootstrap-colab/css/bootstrap-colab-style.css' %}"
+          media="screen, projection" rel="stylesheet" type="text/css">
+    <link href="{% static 'third-party/bootstrap-colab/css/screen.css' %}" 
+          media="screen, projection" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet"
           href="{% static 'third-party/font-awesome/css/font-awesome.min.css' %}"
@@ -36,7 +39,6 @@
     <script type="text/javascript" src="{% static 'third-party/jquery-2.0.3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'third-party/jquery.debouncedresize.js' %}"></script>
     <script type="text/javascript" src="{% static 'third-party/jquery.cookie.js' %}"></script>
-    <script src="{% static 'third-party/bootstrap/js/bootstrap.min.js' %}"></script>
 
     {% include "includes/google_analytics.html" %}
 
@@ -70,6 +72,7 @@
     {% endblock %}
 
     {% block navbar %}
+    <div class="colab-style">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -166,7 +169,7 @@
         </div>
       </div>
     </nav>
-
+    </div>
     {% endblock %}
 
       {% block messages %}
@@ -196,6 +199,7 @@
     <div class="row">&nbsp;</div>
 
     {% block footer %}
+    <div class="colab-style">
     <div class="footer row">
       {% if user.is_staff %}
       <p class="col-lg-12 text-center">{% trans "Last email imported at" %} {{ last_imported_message.received_time|date:'DATETIME_FORMAT' }}</p>
@@ -212,6 +216,7 @@
         </a>
       </p>
     </div>
+    </div>
     {% endblock %}
 
   {% if not is_mobile %}
@@ -227,6 +232,9 @@
     <script src="{% static 'browserid/browserid.js' %}"></script>
   {% endif %}
 
-  {% block footer_js %}{% endblock %}
+  {% block footer_js %}
+    <script src="{% static 'third-party/bootstrap-colab/js/jquery.dropdown.js' %}" type="text/javascript"></script>
+    <script src="{% static 'third-party/bootstrap-colab/js/collapse.js' %}" type="text/javascript"></script>
+  {% endblock %}
   </body>
 </html>

@@ -1,5 +1,5 @@
 
-from ..utils.apps import ColabProxiedAppConfig
+from ..proxybase.apps import ColabProxiedAppConfig
 
 
 class ProxyRedmineAppConfig(ColabProxiedAppConfig):
