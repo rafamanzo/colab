@@ -49,3 +49,6 @@
 <script type="text/javascript" src="{% static 'third-party/jquery.cookie.js' %}"></script>
 <script>jQuery.noConflict();</script>
 {% endblock %}
+
+<!-- removes the 'colab-style' div and lets the bootstrap from gitlab handle it -->
+{% block colab_bootstrap %}{% endblock %}
