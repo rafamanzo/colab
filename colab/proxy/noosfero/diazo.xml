@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE rules [
-<!ENTITY proxybase SYSTEM "../proxybase/diazobase.xml">
+<!ENTITY proxybase SYSTEM "../utils/diazobase.xml">
 ]>
 
 <rules

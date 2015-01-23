@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE rules [
-<!ENTITY proxybase SYSTEM "../proxybase/diazobase.xml">
+<!ENTITY proxybase SYSTEM "../utils/diazobase.xml">
 ]>
 
 <rules
@@ -8,7 +8,7 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <!-- Includes base proxybase/diazobase.xml rules -->
+  <!-- Includes base utils/diazobase.xml rules -->
   &proxybase;
 
   <!-- Redmine specific rules -->

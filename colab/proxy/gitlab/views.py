@@ -1,7 +1,7 @@
 
-from ..utils.views import ColabProxyView
 from django.conf import settings
 
+from ..utils.views import ColabProxyView
 
 class GitlabProxyView(ColabProxyView):
     app_label = 'gitlab'

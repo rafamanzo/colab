@@ -1,7 +1,7 @@
 
 from django.conf import settings
 
-from ..proxybase.views import ColabProxyView
+from ..utils.views import ColabProxyView
 
 
 class RedmineProxyView(ColabProxyView):
