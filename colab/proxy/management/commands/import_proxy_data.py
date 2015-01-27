@@ -5,7 +5,7 @@ import importlib
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from colab.proxy.proxybase.proxy_data_api import ProxyDataAPI
+from colab.proxy.utils.proxy_data_api import ProxyDataAPI
 
 
 class Command(BaseCommand):

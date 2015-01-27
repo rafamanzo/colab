@@ -1,8 +1,11 @@
+import importlib
 
 from django.core.urlresolvers import reverse
 from django import template
 from django.core.cache import cache
 from django.template.loader import render_to_string
+
+from colab.proxy.utils.plugin import ColabPlugin
 
 register = template.Library()
 
@@ -46,3 +49,45 @@ def proxy_menu(context):
 
     cache.set(cache_key, menu)
     return menu
+
+
+class PluginHotspot(template.Node):
+    def __init__(self, plugin_label, hotspot):
+        self.hotspot = hotspot
+        self.plugin_label = template.Variable(plugin_label)
+
+    def render(self, context):
+        self.plugin_label = self.plugin_label.resolve(context)
+        module_name = \
+            'colab.proxy.' + self.plugin_label + '.' + self.plugin_label + \
+            '_plugin'
+
+        module = importlib.import_module(module_name)
+
+        for module_item_name in dir(module):
+
+            module_class = getattr(module, module_item_name)
+
+            if not isinstance(module_class, type):
+                continue
+
+            if not issubclass(module_class, ColabPlugin):
+                continue
+
+            if module_class != ColabPlugin:
+                api = module_class()
+                break
+
+        plugin_function = getattr(api, self.hotspot)
+
+        return plugin_function(context)
+
+
+def plugin_hotspot(parser, token):
+    bits = token.contents.split()
+    if len(bits) != 3:
+        raise TypeError("plugin_hotspot tag takes exactly two arguments")
+
+    return PluginHotspot(bits[1], bits[2])
+
+plugin_hotspot = register.tag(plugin_hotspot)
