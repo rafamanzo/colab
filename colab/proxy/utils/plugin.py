@@ -34,7 +34,7 @@ class ColabPlugin(object):
 
         Example of code hotspot, might be called somewhere in the code from:
 
-        from colab.proxy.proxy.plugin import plugin_hotspot
+        from colab.proxy.utils.plugin import plugin_hotspot
         from colab.settings import PROXIED_APPS
 
 
