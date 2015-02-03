@@ -8,6 +8,7 @@ from django.conf import settings
 from hitcounter.models import HitCounterModelMixin
 
 from colab.accounts.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 class Attachment(models.Model, HitCounterModelMixin):
@@ -22,8 +23,8 @@ class Attachment(models.Model, HitCounterModelMixin):
     size = models.IntegerField(blank=True)
 
     class Meta:
-        managed = False
-        db_table = 'attachment_view'
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
 
     @property
     def filepath(self):
@@ -53,8 +54,8 @@ class Revision(models.Model, HitCounterModelMixin):
     created = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
-        db_table = 'revision_view'
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
 
     def get_absolute_url(self):
         return u'/changeset/{}/{}'.format(self.rev, self.repository_name)
@@ -85,8 +86,8 @@ class Ticket(models.Model, HitCounterModelMixin):
     modified_by = models.TextField(blank=True)
 
     class Meta:
-        managed = False
-        db_table = 'ticket_view'
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
 
     def get_absolute_url(self):
         return u'/ticket/{}'.format(self.id)
@@ -114,8 +115,8 @@ class Wiki(models.Model, HitCounterModelMixin):
     modified_by = models.TextField(blank=True)
 
     class Meta:
-        managed = False
-        db_table = 'wiki_view'
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
 
     def get_absolute_url(self):
         return u'/wiki/{}'.format(self.name)
@@ -131,3 +132,21 @@ class Wiki(models.Model, HitCounterModelMixin):
             return User.objects.get(username=self.modified_by)
         except User.DoesNotExist:
             return None
+
+
+class WikiCollabCount(models.Model):
+    author = models.TextField(primary_key=True)
+    count = models.IntegerField()
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
+
+
+class TicketCollabCount(models.Model):
+    author = models.TextField(primary_key=True)
+    count = models.IntegerField()
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachment')
