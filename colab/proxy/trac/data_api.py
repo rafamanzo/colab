@@ -34,11 +34,23 @@ class TracDataAPI(ProxyDataAPI):
                 attachment.mimetype = attachment.filename.lower()
             attachment.save()
 
+    def fetch_data_revision(self, cursor):
+        revision = Revision()
+        cursor.execute('''SELECT * FROM revision;''')
+        revision_dict = self.dictfetchall(cursor)
+        cursor.execute('''SELECT * FROM repository;''')
+        repository_dict = self.dictfetchall(cursor)
+        for line in revision_dict:
+            revision.author = line['author']
+            revision.rev = line['rev']
+            revision.message = line['message']
+            local_time = line['time']/1000000
+            revision.created = time.strftime('%Y-%m-%d %H:%M:%S',
+                                             time.localtime(local_time))
+            revision.repository_name = repository_dict[line['value']]
+    
     #def fetch_data_ticket(self, cursor)
      #   ticket = Ticket()
-
-    #def fetch_data_revision(self, cursor)
-     #   revision = Revision()
 
     def fetch_data_wiki(self, cursor):
         wiki = Wiki()
