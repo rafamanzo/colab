@@ -49,8 +49,33 @@ class TracDataAPI(ProxyDataAPI):
                                              time.localtime(local_time))
             revision.repository_name = repository_dict[line['value']]
     
-    #def fetch_data_ticket(self, cursor)
-     #   ticket = Ticket()
+    def fetch_data_ticket(self, cursor):
+        ticket = Ticket()
+        collaborators = []
+        cursor.execute('''SELECT * FROM ticket;''')
+        ticket_dict = self.dictfetchall(cursor)
+        for line in ticket_dict:
+            ticket.id = line['id']
+            ticket.summary = line['summary']
+            ticket.description = line['description']
+            ticket.milestone = line['milestone']
+            ticket.priority = line['priority']
+            ticket.component = line['component']
+            ticket.version = line['version']
+            ticket.severity = line['severity']
+            ticket.reporter = line['reporter']
+            ticket.status = line['status']
+            ticket.keywords = line['keywords']
+            ticket.author = ticket.reporter
+            local_time = line['time']/1000000
+            ticket.created = time.strftime('%Y-%m-%d %H:%M:%S',
+                                             time.localtime(local_time))
+            ticket.modified = str(timezone.now())
+            ticket.modified_by = ticket.author
+            if line['report'] not in collaborators:
+                   collaborators.append(line['report'])
+            ticket.collaborators = collaborators
+            
 
     def fetch_data_wiki(self, cursor):
         wiki = Wiki()
