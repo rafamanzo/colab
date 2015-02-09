@@ -84,7 +84,8 @@ class TracDataAPI(ProxyDataAPI):
         collaborators = []
 
         for line in wiki_dict:
-            wiki.name = line['name']
+            wiki.update_user(line['author'])
+            wiki.title = line['name']
             wiki.text = line['text']
             wiki.author = line['author']
             if line['author'] not in collaborators:
@@ -94,7 +95,6 @@ class TracDataAPI(ProxyDataAPI):
             wiki.created = time.strftime('%Y-%m-%d %H:%M:%S',
                                          time.localtime(local_time))
             wiki.modified = str(timezone.now())
-            wiki.modified_by = wiki.author
             wiki.save()
 
     def dictfetchall(self, cursor):

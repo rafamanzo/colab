@@ -7,6 +7,7 @@ from django.conf import settings
 
 from hitcounter.models import HitCounterModelMixin
 
+from colab.proxy.utils.models import Collaboration
 from colab.accounts.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -105,14 +106,19 @@ class Ticket(models.Model, HitCounterModelMixin):
             return None
 
 
-class Wiki(models.Model, HitCounterModelMixin):
-    name = models.TextField(primary_key=True)
+class Wiki(Collaboration, HitCounterModelMixin):
+    type = "wiki"
+    icon_name = "book"
+    title = models.TextField(primary_key=True)
     wiki_text = models.TextField(blank=True)
     author = models.TextField(blank=True)
     collaborators = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
-    modified_by = models.TextField(blank=True)
+
+    @property
+    def description(self):
+        return u'{}\n{}'.format(self.wiki_text, self.collaborators)        
 
     class Meta:
         verbose_name = _('Attachment')
