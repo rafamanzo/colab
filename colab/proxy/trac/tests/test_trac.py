@@ -162,6 +162,8 @@ class WikiTest(TestCase):
         wiki.collaborators = 'collaborators'
         wiki.created = '1994-11-05T08:15:30-05:00'
         wiki.modified = '1994-11-05T08:15:30-05:00'
+        from django.conf import settings
+        print settings.INSTALLED_APPS
         wiki.save()
 
         return wiki
