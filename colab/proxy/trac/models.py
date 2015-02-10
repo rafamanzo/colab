@@ -13,13 +13,16 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Attachment(models.Model, HitCounterModelMixin):
+    type = 'attachment'
+    icon_name = 'file'
     url = models.TextField(primary_key=True)
     attach_id = models.TextField()
     used_by = models.TextField()
     filename = models.TextField()
     author = models.TextField(blank=True)
+    title = models.TextField(blank=True)
     description = models.TextField(blank=True)
-    created = models.DateTimeField(blank=True)
+    modified = models.DateTimeField(blank=True)
     mimetype = models.TextField(blank=True)
     size = models.IntegerField(blank=True)
 

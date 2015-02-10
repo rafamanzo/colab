@@ -13,7 +13,9 @@ class TracDataAPI(ProxyDataAPI):
         cursor = connection.cursor()
         self.fetch_data_wiki(cursor)
         self.fetch_data_attachment(cursor)
-
+        self.fetch_data_ticket(cursor)
+        self.fetch_data_revision(cursor)
+               
     def fetch_data_attachment(self, cursor):
         attachment = Attachment()
         cursor.execute(''' SELECT * from attachment; ''')
@@ -22,13 +24,14 @@ class TracDataAPI(ProxyDataAPI):
             attachment.description = line['description']
             attachment.id = line['attach_id']
             attachment.filename = line['filemame']
+            attachment.title = attachment.filename
             attachment.size = line['size']
             attachment.author = line['author']
             attachment.used_by = line['type']
             attachment.url = attachment.user_by + "/" + attachment.id \
                 + "/" + attachment.filename
             local_time = line['time']/1000000
-            attachment.created = time.strftime('%Y-%m-%d %H:%M:%S',
+            attachment.modified = time.strftime('%Y-%m-%d %H:%M:%S',
                                                time.localtime(local_time))
             if match("\.(\w+)$", attachment.filename):
                 attachment.mimetype = attachment.filename.lower()
