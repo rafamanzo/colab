@@ -80,6 +80,8 @@ class Revision(models.Model, HitCounterModelMixin):
 
 
 class Ticket(models.Model, HitCounterModelMixin):
+    icon_name = 'tag'
+    type = 'ticket'
     id = models.IntegerField(primary_key=True)
     summary = models.TextField(blank=True)
     description = models.TextField(blank=True)
@@ -91,11 +93,23 @@ class Ticket(models.Model, HitCounterModelMixin):
     reporter = models.TextField(blank=True)
     author = models.TextField(blank=True)
     status = models.TextField(blank=True)
+    tag = models.TextField(blank=True)
     keywords = models.TextField(blank=True)
     collaborators = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
     modified_by = models.TextField(blank=True)
+    
+    @property
+    def title(self):
+       return u'#{} - {}'.format(self.id, self.summary) 
+    
+    @property
+    def description(self):
+        return u'{}\n{}\n{}\n{}\n{}\n{}\n{}'.format(
+            self.description, self.milestone, self.component, self.severity,
+            self.reporter, self.keywords, self.collaborators
+        ) 
 
     class Meta:
         verbose_name = _('Attachment')

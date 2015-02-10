@@ -69,6 +69,7 @@ class TracDataAPI(ProxyDataAPI):
             ticket.severity = line['severity']
             ticket.reporter = line['reporter']
             ticket.status = line['status']
+            ticket.tag = ticket.status
             ticket.keywords = line['keywords']
             ticket.author = ticket.reporter
             local_time = line['time']/1000000
