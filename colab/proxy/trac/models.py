@@ -50,12 +50,20 @@ class Attachment(models.Model, HitCounterModelMixin):
 
 
 class Revision(models.Model, HitCounterModelMixin):
+    update_field = 'created'
+    icon_name = 'align-right'
     key = models.TextField(blank=True, primary_key=True)
     rev = models.TextField(blank=True)
     author = models.TextField(blank=True)
     message = models.TextField(blank=True)
+    description = models.TextField(blank=True)
     repository_name = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
+    modified = models.DateTimeField(blank=True, null=True)
+ 
+    @property
+    def title(self):
+        return u'{} [{}]'.format(self.repository_name, self.rev)
 
     class Meta:
         verbose_name = _('Attachment')

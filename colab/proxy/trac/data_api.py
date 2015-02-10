@@ -47,6 +47,7 @@ class TracDataAPI(ProxyDataAPI):
             revision.author = line['author']
             revision.rev = line['rev']
             revision.message = line['message']
+            revision.description = revision.message
             local_time = line['time']/1000000
             revision.created = time.strftime('%Y-%m-%d %H:%M:%S',
                                              time.localtime(local_time))
