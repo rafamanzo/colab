@@ -61,7 +61,7 @@ class TracDataAPI(ProxyDataAPI):
         for line in ticket_dict:
             ticket.id = line['id']
             ticket.summary = line['summary']
-            ticket.description = line['description']
+            ticket.description_ticket = line['description']
             ticket.milestone = line['milestone']
             ticket.priority = line['priority']
             ticket.component = line['component']

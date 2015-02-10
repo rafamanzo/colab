@@ -68,6 +68,7 @@ class Revision(models.Model, HitCounterModelMixin):
     class Meta:
         verbose_name = _('Attachment')
         verbose_name_plural = _('Attachment')
+        db_table = 'trac_revision'        
 
     def get_absolute_url(self):
         return u'/changeset/{}/{}'.format(self.rev, self.repository_name)
@@ -84,7 +85,7 @@ class Ticket(models.Model, HitCounterModelMixin):
     type = 'ticket'
     id = models.IntegerField(primary_key=True)
     summary = models.TextField(blank=True)
-    description = models.TextField(blank=True)
+    description_ticket = models.TextField(blank=True)
     milestone = models.TextField(blank=True)
     priority = models.TextField(blank=True)
     component = models.TextField(blank=True)
@@ -107,7 +108,7 @@ class Ticket(models.Model, HitCounterModelMixin):
     @property
     def description(self):
         return u'{}\n{}\n{}\n{}\n{}\n{}\n{}'.format(
-            self.description, self.milestone, self.component, self.severity,
+            self.description_ticket, self.milestone, self.component, self.severity,
             self.reporter, self.keywords, self.collaborators
         )
 
@@ -150,7 +151,7 @@ class Wiki(Collaboration, HitCounterModelMixin):
         verbose_name_plural = _('Attachment')
 
     def get_absolute_url(self):
-        return u'/wiki/{}'.format(self.name)
+        return u'/wiki/{}'.format(self.title)
 
     def get_author(self):
         try:
@@ -160,7 +161,7 @@ class Wiki(Collaboration, HitCounterModelMixin):
 
     def get_modified_by(self):
         try:
-            return User.objects.get(username=self.modified_by)
+            return User.objects.get(username=self.author)
         except User.DoesNotExist:
             return None
 
