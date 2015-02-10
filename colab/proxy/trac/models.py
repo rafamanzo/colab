@@ -60,7 +60,7 @@ class Revision(models.Model, HitCounterModelMixin):
     repository_name = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
- 
+
     @property
     def title(self):
         return u'{} [{}]'.format(self.repository_name, self.rev)
@@ -99,17 +99,17 @@ class Ticket(models.Model, HitCounterModelMixin):
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
     modified_by = models.TextField(blank=True)
-    
+
     @property
     def title(self):
-       return u'#{} - {}'.format(self.id, self.summary) 
-    
+        return u'#{} - {}'.format(self.id, self.summary)
+
     @property
     def description(self):
         return u'{}\n{}\n{}\n{}\n{}\n{}\n{}'.format(
             self.description, self.milestone, self.component, self.severity,
             self.reporter, self.keywords, self.collaborators
-        ) 
+        )
 
     class Meta:
         verbose_name = _('Attachment')
@@ -143,7 +143,7 @@ class Wiki(Collaboration, HitCounterModelMixin):
 
     @property
     def description(self):
-        return u'{}\n{}'.format(self.wiki_text, self.collaborators)        
+        return u'{}\n{}'.format(self.wiki_text, self.collaborators)
 
     class Meta:
         verbose_name = _('Attachment')

@@ -15,7 +15,7 @@ class TracDataAPI(ProxyDataAPI):
         self.fetch_data_attachment(cursor)
         self.fetch_data_ticket(cursor)
         self.fetch_data_revision(cursor)
-               
+
     def fetch_data_attachment(self, cursor):
         attachment = Attachment()
         cursor.execute(''' SELECT * from attachment; ''')
@@ -32,7 +32,7 @@ class TracDataAPI(ProxyDataAPI):
                 + "/" + attachment.filename
             local_time = line['time']/1000000
             attachment.modified = time.strftime('%Y-%m-%d %H:%M:%S',
-                                               time.localtime(local_time))
+                                                time.localtime(local_time))
             if match("\.(\w+)$", attachment.filename):
                 attachment.mimetype = attachment.filename.lower()
             attachment.save()
@@ -52,7 +52,7 @@ class TracDataAPI(ProxyDataAPI):
             revision.created = time.strftime('%Y-%m-%d %H:%M:%S',
                                              time.localtime(local_time))
             revision.repository_name = repository_dict[line['value']]
-    
+
     def fetch_data_ticket(self, cursor):
         ticket = Ticket()
         collaborators = []
@@ -74,13 +74,12 @@ class TracDataAPI(ProxyDataAPI):
             ticket.author = ticket.reporter
             local_time = line['time']/1000000
             ticket.created = time.strftime('%Y-%m-%d %H:%M:%S',
-                                             time.localtime(local_time))
+                                           time.localtime(local_time))
             ticket.modified = str(timezone.now())
             ticket.modified_by = ticket.author
             if line['report'] not in collaborators:
-                   collaborators.append(line['report'])
+                collaborators.append(line['report'])
             ticket.collaborators = collaborators
-            
 
     def fetch_data_wiki(self, cursor):
         wiki = Wiki()
