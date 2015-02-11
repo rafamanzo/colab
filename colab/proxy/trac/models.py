@@ -105,8 +105,8 @@ class Ticket(models.Model, HitCounterModelMixin):
     @property
     def description(self):
         return u'{}\n{}\n{}\n{}\n{}\n{}\n{}'.format(
-            self.description_ticket, self.milestone, self.component, self.severity,
-            self.reporter, self.keywords, self.collaborators
+            self.description_ticket, self.milestone, self.component,
+            self.severity, self.reporter, self.keywords, self.collaborators
         )
 
     class Meta:
@@ -161,4 +161,3 @@ class Wiki(Collaboration, HitCounterModelMixin):
             return User.objects.get(username=self.author)
         except User.DoesNotExist:
             return None
-

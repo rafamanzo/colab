@@ -16,9 +16,9 @@ class TracDataAPI(ProxyDataAPI):
         self.fetch_data_ticket(cursor)
         self.fetch_data_revision(cursor)
 
-    def fetch_data_attachment(self, cursor):
+    def fetch_data_attachment(self, empty_cursor):
         attachment = Attachment()
-        cursor.execute(''' SELECT * from attachment; ''')
+        cursor = self.attachment_cursor(empty_cursor)
         attachment_dict = self.dictfetchall(cursor)
         for line in attachment_dict:
             attachment.description = line['description']
@@ -37,11 +37,11 @@ class TracDataAPI(ProxyDataAPI):
                 attachment.mimetype = attachment.filename.lower()
             attachment.save()
 
-    def fetch_data_revision(self, cursor):
+    def fetch_data_revision(self, empty_cursor):
         revision = Revision()
-        cursor.execute('''SELECT * FROM revision;''')
+        cursor = self.revision_cursor(empty_cursor)
         revision_dict = self.dictfetchall(cursor)
-        cursor.execute('''SELECT * FROM repository;''')
+        cursor = self.repository_cursor(empty_cursor)
         repository_dict = self.dictfetchall(cursor)
         for line in revision_dict:
             revision.author = line['author']
@@ -53,10 +53,10 @@ class TracDataAPI(ProxyDataAPI):
                                              time.localtime(local_time))
             revision.repository_name = repository_dict[line['value']]
 
-    def fetch_data_ticket(self, cursor):
+    def fetch_data_ticket(self, empty_cursor):
         ticket = Ticket()
         collaborators = []
-        cursor.execute('''SELECT * FROM ticket;''')
+        cursor = self.ticket_cursor(empty_cursor)
         ticket_dict = self.dictfetchall(cursor)
         for line in ticket_dict:
             ticket.id = line['id']
@@ -81,9 +81,9 @@ class TracDataAPI(ProxyDataAPI):
                 collaborators.append(line['report'])
             ticket.collaborators = collaborators
 
-    def fetch_data_wiki(self, cursor):
+    def fetch_data_wiki(self, empty_cursor):
         wiki = Wiki()
-        cursor.execute('''SELECT * FROM wiki;''')
+        cursor = self.wiki_cursor(empty_cursor)
         wiki_dict = self.dictfetchall(cursor)
         collaborators = []
 
@@ -107,3 +107,23 @@ class TracDataAPI(ProxyDataAPI):
             dict(zip([col[0] for col in desc], row))
             for row in cursor.fetchall()
             ]
+
+    def wiki_cursor(self, cursor):
+        cursor.execute('''SELECT * FROM wiki;''')
+        return cursor
+
+    def attachment_cursor(self, cursor):
+        cursor.execute('''SELECT * FROM attachment;''')
+        return cursor
+
+    def ticket_cursor(self, cursor):
+        cursor.execute('''SELECT * FROM ticket;''')
+        return cursor
+
+    def revision_cursor(self, cursor):
+        cursor.execute('''SELECT * FROM revision;''')
+        return cursor
+
+    def repository_cursor(self, cursor):
+        cursor.execute('''SELECT * FROM repository;''')
+        return cursor
