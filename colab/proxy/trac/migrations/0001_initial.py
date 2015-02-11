@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Revision',
             fields=[
-                ('key', models.TextField(serialize=False, primary_key=True, blank=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('rev', models.TextField(blank=True)),
                 ('author', models.TextField(blank=True)),
                 ('message', models.TextField(blank=True)),
@@ -47,16 +47,15 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(null=True, blank=True)),
             ],
             options={
-                'db_table': 'trac_revision',
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachment',
+                'verbose_name': 'Revision',
+                'verbose_name_plural': 'Revision',
             },
             bases=(models.Model, hitcounter.models.HitCounterModelMixin),
         ),
         migrations.CreateModel(
             name='Ticket',
             fields=[
-                ('id', models.IntegerField(serialize=False, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('summary', models.TextField(blank=True)),
                 ('description_ticket', models.TextField(blank=True)),
                 ('milestone', models.TextField(blank=True)),
@@ -75,22 +74,10 @@ class Migration(migrations.Migration):
                 ('modified_by', models.TextField(blank=True)),
             ],
             options={
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachment',
+                'verbose_name': 'Ticket',
+                'verbose_name_plural': 'Ticket',
             },
             bases=(models.Model, hitcounter.models.HitCounterModelMixin),
-        ),
-        migrations.CreateModel(
-            name='TicketCollabCount',
-            fields=[
-                ('author', models.TextField(serialize=False, primary_key=True)),
-                ('count', models.IntegerField()),
-            ],
-            options={
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachment',
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Wiki',
@@ -104,21 +91,9 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachment',
+                'verbose_name': 'Wiki',
+                'verbose_name_plural': 'Wiki',
             },
             bases=(models.Model, hitcounter.models.HitCounterModelMixin),
-        ),
-        migrations.CreateModel(
-            name='WikiCollabCount',
-            fields=[
-                ('author', models.TextField(serialize=False, primary_key=True)),
-                ('count', models.IntegerField()),
-            ],
-            options={
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachment',
-            },
-            bases=(models.Model,),
         ),
     ]

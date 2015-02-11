@@ -52,7 +52,6 @@ class Attachment(models.Model, HitCounterModelMixin):
 class Revision(models.Model, HitCounterModelMixin):
     update_field = 'created'
     icon_name = 'align-right'
-    key = models.TextField(blank=True, primary_key=True)
     rev = models.TextField(blank=True)
     author = models.TextField(blank=True)
     message = models.TextField(blank=True)
@@ -66,9 +65,8 @@ class Revision(models.Model, HitCounterModelMixin):
         return u'{} [{}]'.format(self.repository_name, self.rev)
 
     class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachment')
-        db_table = 'trac_revision'        
+        verbose_name = _('Revision')
+        verbose_name_plural = _('Revision')
 
     def get_absolute_url(self):
         return u'/changeset/{}/{}'.format(self.rev, self.repository_name)
@@ -83,7 +81,6 @@ class Revision(models.Model, HitCounterModelMixin):
 class Ticket(models.Model, HitCounterModelMixin):
     icon_name = 'tag'
     type = 'ticket'
-    id = models.IntegerField(primary_key=True)
     summary = models.TextField(blank=True)
     description_ticket = models.TextField(blank=True)
     milestone = models.TextField(blank=True)
@@ -113,8 +110,8 @@ class Ticket(models.Model, HitCounterModelMixin):
         )
 
     class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachment')
+        verbose_name = _('Ticket')
+        verbose_name_plural = _('Ticket')
 
     def get_absolute_url(self):
         return u'/ticket/{}'.format(self.id)
@@ -147,8 +144,8 @@ class Wiki(Collaboration, HitCounterModelMixin):
         return u'{}\n{}'.format(self.wiki_text, self.collaborators)
 
     class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachment')
+        verbose_name = _('Wiki')
+        verbose_name_plural = _('Wiki')
 
     def get_absolute_url(self):
         return u'/wiki/{}'.format(self.title)
@@ -165,20 +162,3 @@ class Wiki(Collaboration, HitCounterModelMixin):
         except User.DoesNotExist:
             return None
 
-
-class WikiCollabCount(models.Model):
-    author = models.TextField(primary_key=True)
-    count = models.IntegerField()
-
-    class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachment')
-
-
-class TicketCollabCount(models.Model):
-    author = models.TextField(primary_key=True)
-    count = models.IntegerField()
-
-    class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachment')

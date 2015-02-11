@@ -6,14 +6,13 @@ import sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 os.environ['COLAB_SETTINGS'] = 'tests/settings.yaml'
 os.environ['COVERAGE_PROCESS_START'] = '.coveragerc'
-os.environ['REUSE_DB'] = '0'
+os.environ['REUSE_DB'] = '1'
 
 import django
 import coverage
 
 from django.test.utils import get_runner
 from django.conf import settings
-
 
 def runtests():
     if django.VERSION >= (1, 7, 0):
