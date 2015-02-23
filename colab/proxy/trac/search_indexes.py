@@ -75,7 +75,7 @@ class AttachmentIndex(BaseIndex, indexes.Indexable):
 
 
 class WikiIndex(BaseIndex, indexes.Indexable):
-    title = indexes.CharField(model_attr='name')
+    title = indexes.CharField(model_attr='title')
     collaborators = indexes.CharField(
         model_attr='collaborators',
         null=True,
