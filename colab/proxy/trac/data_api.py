@@ -1,10 +1,15 @@
-from colab.proxy.utils.proxy_data_api import ProxyDataAPI
-import time
-from django.db import connections
-from colab.proxy.trac.models import Attachment, Revision, Ticket, Wiki
-from django.utils import timezone
+from datetime import datetime
 from re import match
+from time import mktime
+import time
+import pytz
 
+from django.db import connections
+from django.utils import timezone
+from django.utils.timezone import get_current_timezone_name
+
+from colab.proxy.trac.models import Attachment, Revision, Ticket, Wiki
+from colab.proxy.utils.proxy_data_api import ProxyDataAPI
 
 class TracDataAPI(ProxyDataAPI):
 
@@ -20,17 +25,21 @@ class TracDataAPI(ProxyDataAPI):
         attachment = Attachment()
         cursor = self.attachment_cursor(empty_cursor)
         attachment_dict = self.dictfetchall(cursor)
+        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in attachment_dict:
             attachment.description = line['description']
-            attachment.id = line['attach_id']
-            attachment.filename = line['filemame']
+            attachment.id = attachment.attach_id 
+            attachment.filename = line['filename']
             attachment.title = attachment.filename
             attachment.size = line['size']
             attachment.author = line['author']
             attachment.used_by = line['type']
-            attachment.url = attachment.user_by + "/" + attachment.id \
+            attachment.url = attachment.used_by + "/" + attachment.id \
                 + "/" + attachment.filename
             local_time = line['time']/1000000
+            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
+            attachment.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)          
+
             attachment.modified = time.strftime('%Y-%m-%d %H:%M:%S',
                                                 time.localtime(local_time))
             if match("\.(\w+)$", attachment.filename):
@@ -43,21 +52,23 @@ class TracDataAPI(ProxyDataAPI):
         revision_dict = self.dictfetchall(cursor)
         cursor = self.repository_cursor(empty_cursor)
         repository_dict = self.dictfetchall(cursor)
+        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in revision_dict:
             revision.author = line['author']
             revision.rev = line['rev']
             revision.message = line['message']
             revision.description = revision.message
             local_time = line['time']/1000000
-            revision.created = time.strftime('%Y-%m-%d %H:%M:%S',
-                                             time.localtime(local_time))
-            revision.repository_name = repository_dict[line['value']]
+            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
+            revision.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
+            revision.repository_name = repository_dict[line['repos']]
 
     def fetch_data_ticket(self, empty_cursor):
         ticket = Ticket()
         collaborators = []
         cursor = self.ticket_cursor(empty_cursor)
         ticket_dict = self.dictfetchall(cursor)
+        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in ticket_dict:
             ticket.id = line['id']
             ticket.summary = line['summary']
@@ -73,12 +84,12 @@ class TracDataAPI(ProxyDataAPI):
             ticket.keywords = line['keywords']
             ticket.author = ticket.reporter
             local_time = line['time']/1000000
-            ticket.created = time.strftime('%Y-%m-%d %H:%M:%S',
-                                           time.localtime(local_time))
+            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
+            ticket.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
             ticket.modified = str(timezone.now())
             ticket.modified_by = ticket.author
-            if line['report'] not in collaborators:
-                collaborators.append(line['report'])
+            if line['reporter'] not in collaborators:
+                collaborators.append(line['reporter'])
             ticket.collaborators = collaborators
 
     def fetch_data_wiki(self, empty_cursor):
@@ -86,7 +97,7 @@ class TracDataAPI(ProxyDataAPI):
         cursor = self.wiki_cursor(empty_cursor)
         wiki_dict = self.dictfetchall(cursor)
         collaborators = []
-
+        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in wiki_dict:
             wiki.update_user(line['author'])
             wiki.title = line['name']
@@ -96,8 +107,8 @@ class TracDataAPI(ProxyDataAPI):
                     collaborators.append(line['author'])
             wiki.collaborators = collaborators
             local_time = line['time']/1000000
-            wiki.created = time.strftime('%Y-%m-%d %H:%M:%S',
-                                         time.localtime(local_time))
+            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
+            wiki.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
             wiki.modified = str(timezone.now())
             wiki.save()
 
