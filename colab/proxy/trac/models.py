@@ -22,9 +22,10 @@ class Attachment(models.Model, HitCounterModelMixin):
     author = models.TextField(blank=True)
     title = models.TextField(blank=True)
     description = models.TextField(blank=True)
-    modified = models.DateTimeField(blank=True)
+    created = models.DateTimeField(blank=True)
     mimetype = models.TextField(blank=True)
     size = models.IntegerField(blank=True)
+    ipnr = models.TextField(blank=True)
 
     class Meta:
         verbose_name = _('Attachment')
@@ -58,7 +59,6 @@ class Revision(models.Model, HitCounterModelMixin):
     description = models.TextField(blank=True)
     repository_name = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
-    modified = models.DateTimeField(blank=True, null=True)
 
     @property
     def title(self):
@@ -97,6 +97,8 @@ class Ticket(models.Model, HitCounterModelMixin):
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
     modified_by = models.TextField(blank=True)
+    owner = models.TextField(blank=True)
+    resolution = models.TextField(blank=True)
 
     @property
     def title(self):

@@ -1,12 +1,8 @@
-from datetime import datetime
 from re import match
 from time import mktime
-import time
-import pytz
+import datetime
 
 from django.db import connections
-from django.utils import timezone
-from django.utils.timezone import get_current_timezone_name
 
 from colab.proxy.trac.models import Attachment, Revision, Ticket, Wiki
 from colab.proxy.utils.proxy_data_api import ProxyDataAPI
@@ -25,23 +21,18 @@ class TracDataAPI(ProxyDataAPI):
         attachment = Attachment()
         cursor = self.attachment_cursor(empty_cursor)
         attachment_dict = self.dictfetchall(cursor)
-        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in attachment_dict:
             attachment.description = line['description']
-            attachment.id = attachment.attach_id 
+            attachment.id = line['id']
             attachment.filename = line['filename']
             attachment.title = attachment.filename
             attachment.size = line['size']
             attachment.author = line['author']
             attachment.used_by = line['type']
+            attachment.ipnr = line['ipnr']
             attachment.url = attachment.used_by + "/" + attachment.id \
                 + "/" + attachment.filename
-            local_time = line['time']/1000000
-            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
-            attachment.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)          
-
-            attachment.modified = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                time.localtime(local_time))
+            attachment.created = self.get_attachment_created(cursor, line['id'])
             if match("\.(\w+)$", attachment.filename):
                 attachment.mimetype = attachment.filename.lower()
             attachment.save()
@@ -52,15 +43,12 @@ class TracDataAPI(ProxyDataAPI):
         revision_dict = self.dictfetchall(cursor)
         cursor = self.repository_cursor(empty_cursor)
         repository_dict = self.dictfetchall(cursor)
-        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in revision_dict:
             revision.author = line['author']
             revision.rev = line['rev']
             revision.message = line['message']
             revision.description = revision.message
-            local_time = line['time']/1000000
-            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
-            revision.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
+            revision.created = self.get_revision_created(cursor, line['rev'])
             revision.repository_name = repository_dict[line['repos']]
 
     def fetch_data_ticket(self, empty_cursor):
@@ -68,7 +56,6 @@ class TracDataAPI(ProxyDataAPI):
         collaborators = []
         cursor = self.ticket_cursor(empty_cursor)
         ticket_dict = self.dictfetchall(cursor)
-        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in ticket_dict:
             ticket.id = line['id']
             ticket.summary = line['summary']
@@ -82,11 +69,11 @@ class TracDataAPI(ProxyDataAPI):
             ticket.status = line['status']
             ticket.tag = ticket.status
             ticket.keywords = line['keywords']
+            ticket.owner = line['owner']
+            ticket.resolution = line['resolution']
             ticket.author = ticket.reporter
-            local_time = line['time']/1000000
-            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
-            ticket.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
-            ticket.modified = str(timezone.now())
+            ticket.created = self.get_ticket_created(cursor, line['id'])
+            ticket.modified = self.get_ticket_modified(cursor, line['id'])
             ticket.modified_by = ticket.author
             if line['reporter'] not in collaborators:
                 collaborators.append(line['reporter'])
@@ -97,7 +84,6 @@ class TracDataAPI(ProxyDataAPI):
         cursor = self.wiki_cursor(empty_cursor)
         wiki_dict = self.dictfetchall(cursor)
         collaborators = []
-        time_zone = pytz.timezone(get_current_timezone_name())	
         for line in wiki_dict:
             wiki.update_user(line['author'])
             wiki.title = line['name']
@@ -106,10 +92,9 @@ class TracDataAPI(ProxyDataAPI):
             if line['author'] not in collaborators:
                     collaborators.append(line['author'])
             wiki.collaborators = collaborators
-            local_time = line['time']/1000000
-            naive_date_time = datetime.fromtimestamp(mktime(time.localtime(local_time)))
-            wiki.created = time_zone.localize(naive_date_time, is_dst=None).astimezone(pytz.utc)
-            wiki.modified = str(timezone.now())
+            wiki.created =self.get_wiki_created(cursor, line['name'])
+            wiki.modified = self.get_wiki_modified(cursor, line['name'])
+
             wiki.save()
 
     def dictfetchall(self, cursor):
@@ -138,3 +123,39 @@ class TracDataAPI(ProxyDataAPI):
     def repository_cursor(self, cursor):
         cursor.execute('''SELECT * FROM repository;''')
         return cursor
+
+    def get_wiki_modified(self, cursor, wiki_name):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MAX(wiki.time)/1000000) * INTERVAL '1s', name from wiki where(name=\'"""+ wiki_name + """\') group by name; """)
+        matriz_data_wiki  = cursor.fetchall()
+        modified_data = matriz_data_wiki[0][0]
+        return modified_data
+
+    def get_wiki_created(self, cursor, wiki_name):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(wiki.time)/1000000) * INTERVAL '1s', name from wiki where(name=\'"""+ wiki_name + """\') group by name; """)
+        matrix_data_wiki  = cursor.fetchall()
+        modified_data = matrix_data_wiki[0][0]
+        return modified_data
+
+    def get_attachment_created(self, cursor, attachment_id):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(attachment.time)/1000000) * INTERVAL '1s', id from attachment where(id=\'"""+ attachment_id + """\') group by id; """)
+        matriz_data_attachment = cursor.fetchall()
+        modified_data = matriz_data_attachment[0][0]
+        return modified_data
+
+    def get_revision_created(self, cursor, revision):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(revision.time)/1000000) * INTERVAL '1s', rev from revision where(rev=\'"""+ revision + """\') group by rev; """)
+        matriz_data_revision = cursor.fetchall()
+        modified_data = matriz_data_revision[0][0]
+        return modified_data
+
+    def get_ticket_created(self, cursor, ticket_id):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(ticket.time)/1000000) * INTERVAL '1s', id from ticket where(id="""+ str(ticket_id) + """) group by id; """)
+        matriz_data_ticket = cursor.fetchall()
+        modified_data = matriz_data_ticket[0][0]
+        return modified_data
+
+    def get_ticket_modified(self, cursor, ticket_id):
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MAX(ticket.time)/1000000) * INTERVAL '1s', id from ticket where(id="""+ str(ticket_id) + """) group by id; """)
+        matriz_data_ticket = cursor.fetchall()
+        modified_data = matriz_data_ticket[0][0]
+        return modified_data

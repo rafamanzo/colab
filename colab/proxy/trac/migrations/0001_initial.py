@@ -27,6 +27,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(blank=True)),
                 ('mimetype', models.TextField(blank=True)),
                 ('size', models.IntegerField(blank=True)),
+                ('ipnr', models.TextField(blank=True)),
             ],
             options={
                 'verbose_name': 'Attachment',
@@ -72,6 +73,8 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(null=True, blank=True)),
                 ('modified', models.DateTimeField(null=True, blank=True)),
                 ('modified_by', models.TextField(blank=True)),
+                ('owner', models.TextField(blank=True)),
+                ('resolution', models.TextField(blank=True)),
             ],
             options={
                 'verbose_name': 'Ticket',
@@ -88,6 +91,7 @@ class Migration(migrations.Migration):
                 ('collaborators', models.TextField(blank=True)),
                 ('created', models.DateTimeField(null=True, blank=True)),
                 ('modified', models.DateTimeField(null=True, blank=True)),
+                ('comment', models.TextField(blank=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
