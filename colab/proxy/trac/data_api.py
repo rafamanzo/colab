@@ -1,11 +1,10 @@
 from re import match
-from time import mktime
-import datetime
 
 from django.db import connections
 
 from colab.proxy.trac.models import Attachment, Revision, Ticket, Wiki
 from colab.proxy.utils.proxy_data_api import ProxyDataAPI
+
 
 class TracDataAPI(ProxyDataAPI):
 
@@ -32,7 +31,8 @@ class TracDataAPI(ProxyDataAPI):
             attachment.ipnr = line['ipnr']
             attachment.url = attachment.used_by + "/" + attachment.id \
                 + "/" + attachment.filename
-            attachment.created = self.get_attachment_created(cursor, line['id'])
+            attachment.created = self.get_attachment_created(cursor,
+                                                             line['id'])
             if match("\.(\w+)$", attachment.filename):
                 attachment.mimetype = attachment.filename.lower()
             attachment.save()
@@ -92,7 +92,7 @@ class TracDataAPI(ProxyDataAPI):
             if line['author'] not in collaborators:
                     collaborators.append(line['author'])
             wiki.collaborators = collaborators
-            wiki.created =self.get_wiki_created(cursor, line['name'])
+            wiki.created = self.get_wiki_created(cursor, line['name'])
             wiki.modified = self.get_wiki_modified(cursor, line['name'])
 
             wiki.save()
@@ -125,37 +125,56 @@ class TracDataAPI(ProxyDataAPI):
         return cursor
 
     def get_wiki_modified(self, cursor, wiki_name):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MAX(wiki.time)/1000000) * INTERVAL '1s', name from wiki where(name=\'"""+ wiki_name + """\') group by name; """)
-        matriz_data_wiki  = cursor.fetchall()
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MAX(wiki.time)/1000000) * INTERVAL '1s', \
+                       name from wiki where(name=\'""" + wiki_name + """\') \
+                       group by name; """)
+        matriz_data_wiki = cursor.fetchall()
         modified_data = matriz_data_wiki[0][0]
         return modified_data
 
     def get_wiki_created(self, cursor, wiki_name):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(wiki.time)/1000000) * INTERVAL '1s', name from wiki where(name=\'"""+ wiki_name + """\') group by name; """)
-        matrix_data_wiki  = cursor.fetchall()
-        modified_data = matrix_data_wiki[0][0]
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MIN(wiki.time)/1000000) * INTERVAL '1s', \
+                       name from wiki where(name=\'""" + wiki_name + """\') \
+                       group by name; """)
+        matriz_data_wiki = cursor.fetchall()
+        modified_data = matriz_data_wiki[0][0]
         return modified_data
 
     def get_attachment_created(self, cursor, attachment_id):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(attachment.time)/1000000) * INTERVAL '1s', id from attachment where(id=\'"""+ attachment_id + """\') group by id; """)
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MIN(attachment.time)/1000000) * INTERVAL '1s', \
+                       id from attachment \
+                       where(id=\'""" + attachment_id + """\') \
+                       group by id; """)
         matriz_data_attachment = cursor.fetchall()
         modified_data = matriz_data_attachment[0][0]
         return modified_data
 
     def get_revision_created(self, cursor, revision):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(revision.time)/1000000) * INTERVAL '1s', rev from revision where(rev=\'"""+ revision + """\') group by rev; """)
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MIN(revision.time)/1000000) * INTERVAL '1s', \
+                       rev from revision where(rev=\'""" + revision + """\') \
+                       group by rev; """)
         matriz_data_revision = cursor.fetchall()
         modified_data = matriz_data_revision[0][0]
         return modified_data
 
     def get_ticket_created(self, cursor, ticket_id):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MIN(ticket.time)/1000000) * INTERVAL '1s', id from ticket where(id="""+ str(ticket_id) + """) group by id; """)
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MIN(ticket.time)/1000000) * INTERVAL '1s', \
+                       id from ticket where(id=""" + str(ticket_id) + """) \
+                       group by id; """)
         matriz_data_ticket = cursor.fetchall()
         modified_data = matriz_data_ticket[0][0]
         return modified_data
 
     def get_ticket_modified(self, cursor, ticket_id):
-        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + (MAX(ticket.time)/1000000) * INTERVAL '1s', id from ticket where(id="""+ str(ticket_id) + """) group by id; """)
+        cursor.execute("""SELECT TIMESTAMP WITH TIME ZONE 'epoch' + \
+                       (MAX(ticket.time)/1000000) * INTERVAL '1s', \
+                       id from ticket where(id=""" + str(ticket_id) + """) \
+                       group by id; """)
         matriz_data_ticket = cursor.fetchall()
         modified_data = matriz_data_ticket[0][0]
         return modified_data
