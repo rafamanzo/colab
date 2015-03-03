@@ -20,19 +20,15 @@ Trac
 ++++
 
 
-Dado que o Trac ja está instalado :
+Since Trac already installed:
 
-- Vocẽ pode instalá-lo facilmente da seguinte maneira:
+- Easily, you can install it as follows:
 
 .. code-block:: sh
 
   $ pip install trac
 
-Para ativar o plugin do Trac deve-se primeiramente configurar o banco de dados
-do trac em:
-
-1. vim /etc/colab/settings.yml
-
+To enable Trac plugin must first configure the trac database in /etc/colab/settings.yml:
 
 .. code-block:: yaml
 
@@ -50,7 +46,7 @@ do trac em:
   USER: colab
   PASSWORD: colab
 
-2. Ainda no mesmo arquivo descomentar o Trac em PROXIED_APPS
+- Yet this file uncomment in PROXIED_APPS the Trac:
 
 .. code-block:: yaml
 
@@ -61,27 +57,27 @@ do trac em:
     trac:
       upstream: 'http://localhost:5000/trac/'
 
-3. Criar o banco de dados no postgresql com usuário colab
+- Create the database in postgresql with user
 
 .. code-block:: sh
 
   $ sudo -u postgres psql
   $ create database trac owner colab;
 
-4. Agora você deve gerar as migrações do trac
+- Now, generate the migrations:
 
 .. code-block:: sh
 
-  # Dado que você está na pasta do colab
+  # Since you are in the folder colab 
   $ workon colab
   $ colab-admin makemigrations trac
   $ colab-admin migrate
 
-5. Por fim basta importar os dados do trac ( pode levar algumtempo ).
+- Finally, just import the Trac data (may take a few minutes):
 
 .. code-block:: sh
 
-  # Dado que você está na pasta do colab
+  # Since you are in the folder colab 
   $ colab-admin import_proxy_data
 
 Settings
