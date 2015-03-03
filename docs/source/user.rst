@@ -16,6 +16,74 @@ Plugins
 -------
 .. TODO
 
+Trac
+++++
+
+
+Dado que o Trac ja está instalado :
+
+- Vocẽ pode instalá-lo facilmente da seguinte maneira:
+
+.. code-block:: sh
+
+  $ pip install trac
+
+Para ativar o plugin do Trac deve-se primeiramente configurar o banco de dados
+do trac em:
+
+1. vim /etc/colab/settings.yml
+
+
+.. code-block:: yaml
+
+  DATABASES:
+    default:
+      ENGINE: django.db.backends.postgresql_psycopg2
+      HOST: localhost
+      NAME: colab
+      USER: colab
+      PASSWORD: colab
+  trac:
+  ENGINE: django.db.backends.postgresql_psycopg2
+  HOST: localhost
+  NAME: trac
+  USER: colab
+  PASSWORD: colab
+
+2. Ainda no mesmo arquivo descomentar o Trac em PROXIED_APPS
+
+.. code-block:: yaml
+
+  PROXIED_APPS:
+    # gitlab:
+    # upstream: 'http://localhost:8090/gitlab/'
+    # private_token: ''
+    trac:
+      upstream: 'http://localhost:5000/trac/'
+
+3. Criar o banco de dados no postgresql com usuário colab
+
+.. code-block:: sh
+
+  $ sudo -u postgres psql
+  $ create database trac owner colab;
+
+4. Agora você deve gerar as migrações do trac
+
+.. code-block:: sh
+
+  # Dado que você está na pasta do colab
+  $ workon colab
+  $ colab-admin makemigrations trac
+  $ colab-admin migrate
+
+5. Por fim basta importar os dados do trac ( pode levar algumtempo ).
+
+.. code-block:: sh
+
+  # Dado que você está na pasta do colab
+  $ colab-admin import_proxy_data
+
 Settings
 --------
 

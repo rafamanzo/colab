@@ -30,6 +30,8 @@ Contents:
    user
    plugindev
    dev
+   trac
+
 
 
 Indices and tables
@@ -38,4 +40,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

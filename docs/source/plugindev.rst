@@ -1,5 +1,5 @@
 Plugin Developer Documentation
-==================
+==============================
 
 Getting Started
 ---------------
