@@ -76,7 +76,8 @@ class TracDataAPI(ProxyDataAPI):
             revision.message = line['message']
             revision.description = revision.message
             revision.created = self.get_revision_created(cursor, line['rev'])
-            revision.repository_name = repository_dict[line['repos']]
+            revision.repository_name = line['repos']
+            revision.save()
 
     def fetch_data_ticket(self, empty_cursor):
         """ This method is responsible for seeking the ticket data in
@@ -106,16 +107,24 @@ class TracDataAPI(ProxyDataAPI):
             ticket.reporter = line['reporter']
             ticket.status = line['status']
             ticket.tag = ticket.status
-            ticket.keywords = line['keywords']
-            ticket.owner = line['owner']
-            ticket.resolution = line['resolution']
+            if line['keywords']:
+                ticket.keywords = line['keywords']
+            if line['owner']:
+                ticket.owner = line['owner']
+            else:
+                ticket.owner = 'Anonymous'
+            if line['resolution']:
+                ticket.resolution = line['resolution']
+            else:
+                ticket.resolution = 'no resolution'
             ticket.author = ticket.reporter
             ticket.created = self.get_ticket_created(cursor, line['id'])
             ticket.modified = self.get_ticket_modified(cursor, line['id'])
-            ticket.modified_by = ticket.author
             if line['reporter'] not in collaborators:
                 collaborators.append(line['reporter'])
             ticket.collaborators = collaborators
+            ticket.update_user(ticket.author)
+            ticket.save()
 
     def fetch_data_wiki(self, empty_cursor):
         """ This method is responsible for seeking the wiki data in
@@ -136,7 +145,7 @@ class TracDataAPI(ProxyDataAPI):
         for line in wiki_dict:
             wiki.update_user(line['author'])
             wiki.title = line['name']
-            wiki.text = line['text']
+            wiki.wiki_text = line['text']
             wiki.author = line['author']
             if line['author'] not in collaborators:
                     collaborators.append(line['author'])

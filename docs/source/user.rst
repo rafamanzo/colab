@@ -30,6 +30,8 @@ Since Trac already installed:
 
 To enable Trac plugin must first configure the trac database in /etc/colab/settings.yml:
 
+1. vim /etc/colab/settings.yaml
+
 .. code-block:: yaml
 
   DATABASES:
@@ -39,12 +41,12 @@ To enable Trac plugin must first configure the trac database in /etc/colab/setti
       NAME: colab
       USER: colab
       PASSWORD: colab
-  trac:
-  ENGINE: django.db.backends.postgresql_psycopg2
-  HOST: localhost
-  NAME: trac
-  USER: colab
-  PASSWORD: colab
+    trac:
+    ENGINE: django.db.backends.postgresql_psycopg2
+    HOST: localhost
+    NAME: trac
+    USER: colab
+    PASSWORD: colab
 
 - Yet this file uncomment in PROXIED_APPS the Trac:
 
@@ -68,16 +70,16 @@ To enable Trac plugin must first configure the trac database in /etc/colab/setti
 
 .. code-block:: sh
 
-  # Since you are in the folder colab 
+  # Since you are in the folder colab
   $ workon colab
-  $ colab-admin makemigrations trac
-  $ colab-admin migrate
+  $ colab-admin makemigrations
+  $ colab-admin migrate trac
 
 - Finally, just import the Trac data (may take a few minutes):
 
 .. code-block:: sh
 
-  # Since you are in the folder colab 
+  # Since you are in the folder colab
   $ colab-admin import_proxy_data
 
 Settings

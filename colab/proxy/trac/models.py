@@ -49,7 +49,6 @@ class Attachment(models.Model, HitCounterModelMixin):
         except User.DoesNotExist:
             return None
 
-
 class Revision(models.Model, HitCounterModelMixin):
     update_field = 'created'
     icon_name = 'align-right'
@@ -78,7 +77,7 @@ class Revision(models.Model, HitCounterModelMixin):
             return None
 
 
-class Ticket(models.Model, HitCounterModelMixin):
+class Ticket(Collaboration, HitCounterModelMixin):
     icon_name = 'tag'
     type = 'ticket'
     summary = models.TextField(blank=True)
@@ -96,7 +95,6 @@ class Ticket(models.Model, HitCounterModelMixin):
     collaborators = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField(blank=True, null=True)
-    modified_by = models.TextField(blank=True)
     owner = models.TextField(blank=True)
     resolution = models.TextField(blank=True)
 
