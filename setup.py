@@ -54,8 +54,6 @@ REQUIREMENTS = [
 
 TEST_REQUIREMENTS = [
     'coverage==3.7.1',
-    'coveralls==0.5',
-    'flake8==2.3.0',
     'mock==1.0.1',
 ]
 
