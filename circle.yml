@@ -4,10 +4,6 @@ dependencies:
     - make
     - make ci_install
 
-  cache_directories:
-    - ".colab-wheel/"
-    - "solr-4.10.3.tgz"
-
 database:
   post:
     - make run_solr:
