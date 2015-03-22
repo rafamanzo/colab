@@ -11,11 +11,8 @@ all:
 	pip install wheel
 	pip wheel --wheel-dir=$(WHEEL_DIR) .
 
-install: all
+install:
 	pip install --use-wheel --no-index --find-links=$(WHEEL_DIR) .
-
-test_install: install_solr
-	pip install flake8
 
 install_solr: install
 	# Install java
@@ -25,7 +22,11 @@ install_solr: install
 	colab-admin build_solr_schema > /tmp/schema.xml
 	SOLR_VERSION=4.10.3  SOLR_CONFS="/tmp/schema.xml" ci/install_solr.sh
 
-travis_install: test_install
+test_install: install_solr
+	pip install flake8
+
+ci_install: test_install
+	dropdb test_colab --if-exists -U postgres
 	psql -c "CREATE USER colab WITH PASSWORD 'colab' CREATEDB;" -U postgres
 
 test:

@@ -1,7 +1,8 @@
 
 dependencies:
   override:
-    - make travis_install
+    - make
+    - make ci_install
 
   cache_directories:
     - ".colab-wheel/"
