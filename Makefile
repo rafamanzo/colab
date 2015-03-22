@@ -19,10 +19,10 @@ install:
 	python setup.py install
 	virtualenv --relocatable $(VIRTUALENV_PATH)
 
-test_install: install install_solr
+test_install: install_solr
 	pip install flake8
 
-install_solr:
+install_solr: install
 	# Install java
 	which apt-get && sudo apt-get install default-jre -y || echo # deb
 	which yum && sudo yum install java -y || echo # rpm
