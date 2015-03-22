@@ -1,6 +1,7 @@
 %define name colab
-%define version 1.9
-%define unmangled_version 1.9
+# version must be given from command line
+# %define version ??
+%define unmangled_version %{version}
 %define default_release 1
 %{!?release: %define release %{default_release}}
 %define buildvenv /var/tmp/%{name}-%{version}

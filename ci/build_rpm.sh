@@ -48,7 +48,7 @@ fi
 
 echo "Building package: $version-$release"
 
-sudo HOME=/root chroot /tmp/centos-7/ rpmbuild --define "release $release" -ba /root/rpmbuild/SPECS/colab.spec --quiet
+sudo HOME=/root chroot /tmp/centos-7/ rpmbuild --define "version $version" --define "release $release" -ba /root/rpmbuild/SPECS/colab.spec --quiet
 sudo cp /tmp/centos-7/root/rpmbuild/RPMS/noarch/colab-$version-$release.noarch.rpm .
 
 
