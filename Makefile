@@ -2,10 +2,12 @@
 WHEEL_DIR = .colab-wheel/
 
 DJANGO_SETTINGS_MODULE = tests.settings
-export DJANGO_SETTINGS_MODULE
 COLAB_SETTINGS = tests/settings.yaml
-export COLAB_SETTINGS
+SOLR_VERSION = 4.10.3
 
+export DJANGO_SETTINGS_MODULE
+export COLAB_SETTINGS
+export SOLR_VERSION
 
 all:
 	pip install wheel
@@ -20,7 +22,10 @@ install_solr: install
 	which yum && sudo yum install java -y || echo # rpm
 	
 	colab-admin build_solr_schema > /tmp/schema.xml
-	SOLR_VERSION=4.10.3  SOLR_CONFS="/tmp/schema.xml" ci/install_solr.sh
+	SOLR_CONFS="/tmp/schema.xml" ci/install_solr.sh
+
+run_solr:
+	cd solr-$(SOLR_VERSION)/example/; java -jar start.jar
 
 test_install: install_solr
 	pip install flake8

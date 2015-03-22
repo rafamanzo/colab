@@ -8,6 +8,11 @@ dependencies:
     - ".colab-wheel/"
     - "solr-4.10.3.tgz"
 
+database:
+  post:
+    - make run_solr:
+        background: true
+
 test:
   override:
     - make test
