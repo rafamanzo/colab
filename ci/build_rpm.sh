@@ -32,7 +32,7 @@ sudo cp ci/softwarepublico.key /tmp/centos-7/etc/yum.repos.d/
 # Commands on chroot
 
 sudo chroot /tmp/centos-7/ yum install rpm-build -y --quiet
-sudo chroot /tmp/centos-7/ yum-builddep /root/rpmbuild/SPECS/colab.spec
+sudo chroot /tmp/centos-7/ yum-builddep /root/rpmbuild/SPECS/colab.spec -y
 
 sudo chroot /tmp/centos-7/ repoquery --repofrompath="$repo,$repo_url" --repoid=$repo colab --info > /tmp/colab-latest-info
 

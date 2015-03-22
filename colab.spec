@@ -1,5 +1,6 @@
 %define name colab
-# version must be given from command line
+%define default_version 1
+%{!?version: %define version %{default_version}}
 %define unmangled_version %{version}
 %define default_release 1
 %{!?release: %define release %{default_release}}
