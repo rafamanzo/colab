@@ -12,3 +12,6 @@ database:
 test:
   override:
     - make test
+
+  post:
+    - make rpm

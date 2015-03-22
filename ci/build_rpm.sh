@@ -1,14 +1,18 @@
 #!/bin/bash
 
-if [ "$TRAVIS_BRANCH" == "master" ]; then
-  repo="colab-unstable"
-elif [ "$TRAVIS_BRANCH" == "stable" ]; then
-  repo="colab-stable"
-elif [ "$TRAVIS_BRANCH" == "test" ]; then
-  repo="colab-testing"
-else
-  exit 0;
-fi
+BRANCH=${TRAVIS_BRANCH:-${CIRCLE_BRANCH}}
+
+case $BRANCH in
+    "master")
+        repo="colab-unstable" ;;
+    "stable")
+        repo="colab-stable" ;;
+    "test")
+        repo="colab-testing" ;;
+    *)
+        exit 1;;
+esac
+
 
 repo_url="https://packagecloud.io/seocam/$repo/el/7/x86_64"
 
