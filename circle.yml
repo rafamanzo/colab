@@ -6,6 +6,7 @@ dependencies:
 
   cache_directories:
     - ".colab-wheel/"
+    - "solr-4.10.3.tgz"
 
 test:
   override:
