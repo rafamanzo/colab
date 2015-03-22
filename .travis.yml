@@ -4,7 +4,8 @@ python:
   - "2.7"
 
 install:
-  - make travis_install
+  - make
+  - make ci_install
 
 script:
   - make test
