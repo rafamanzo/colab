@@ -16,10 +16,10 @@ all:
 
 install:
 	virtualenv $(VIRTUALENV_PATH)
-	pip install .
+	python setup.py install
 	virtualenv --relocatable $(VIRTUALENV_PATH)
 
-test_install: install_solr
+test_install: install install_solr
 	pip install flake8
 
 install_solr:
