@@ -1,23 +1,18 @@
 
-VIRTUALENV_PATH = /tmp/colab-venv
-PATH := $(VIRTUALENV_PATH)/bin:${PATH}
+WHEEL_DIR = .colab-wheel/
 
 DJANGO_SETTINGS_MODULE = tests.settings
 export DJANGO_SETTINGS_MODULE
 COLAB_SETTINGS = tests/settings.yaml
 export COLAB_SETTINGS
 
-ifndef RELEASE
-  RELEASE = 1
-endif
 
 all:
-	echo $(RELEASE)
+	pip install wheel
+	pip wheel --wheel-dir=$(WHEEL_DIR) .
 
-install:
-	virtualenv $(VIRTUALENV_PATH)
-	python setup.py install
-	virtualenv --relocatable $(VIRTUALENV_PATH)
+install: all
+	pip install --use-wheel --no-index --find-links=$(WHEEL_DIR) .
 
 test_install: install_solr
 	pip install flake8
@@ -45,4 +40,4 @@ rpm:
 	ci/build_rpm.sh
 
 clean:
-	$(RM) -r $(VIRTUALENV_PATH)
+	$(RM) -r $(WHEEL_DIR)
