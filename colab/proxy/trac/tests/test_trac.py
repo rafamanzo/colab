@@ -27,6 +27,7 @@ class AttachmentTest(TestCase):
         attachment.title = 'title'
         attachment.description = 'description'
         attachment.modified = '1994-11-05T08:15:30-05:00'
+        attachment.created = '1994-11-05T08:15:30-05:00'
         attachment.mimetype = 'mimetype'
         attachment.size = 20
         attachment.save()
@@ -110,7 +111,6 @@ class TicketTest(TestCase):
         ticket.collaborators = 'collaborators'
         ticket.created = '1994-11-05T08:15:30-05:00'
         ticket.modified = '1994-11-05T08:15:30-05:00'
-        ticket.modified_by = 'author'
         ticket.save()
 
         return ticket
@@ -141,7 +141,7 @@ class TicketTest(TestCase):
     def test_get_modified_by(self):
         self.user = create_user()
         get_modified_by = str(self.ticket.get_modified_by())
-        self.assertEqual(self.ticket.modified_by, get_modified_by)
+        self.assertEqual(str(self.ticket.modified_by), get_modified_by)
 
     def test_invalid_get_modified_by(self):
         get_modified_by = self.ticket.get_modified_by()
