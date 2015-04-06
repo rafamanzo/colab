@@ -36,7 +36,6 @@ urlpatterns = patterns('',
     url(r'^colab/admin/', include(admin.site.urls)),
 
     url(r'^trac/', include('colab.plugins.trac.urls')),
-    url(r'^gitlab/', include('colab.plugins.gitlab.urls')),
     url(r'^social/', include('colab.plugins.noosfero.urls')),
     url(r'^ci/', include('colab.plugins.jenkins.urls')),
 

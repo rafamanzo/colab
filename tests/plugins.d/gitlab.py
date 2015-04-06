@@ -1,39 +1,23 @@
 from django.utils.translation import ugettext_lazy as _
+from colab.plugins.utils.menu import colab_url_factory
 
-name = 'colab.plugins.gitlab'
+name = 'colab_gitlab'
 verbose_name = 'Gitlab Proxy'
 
 upstream = 'localhost'
 #middlewares = []
 
-menu = {
-'title': _('Code'),
-'links': (
-    (_('Public Projects'), 'public/projects'),
-),
-'auth_links': (
-    (_('Profile'), 'profile'),
-    (_('New Project'), 'projects/new'),
-    (_('Projects'), 'dashboard/projects'),
-    (_('Groups'), 'profile/groups'),
-    (_('Issues'), 'dashboard/issues'),
-    (_('Merge Requests'), 'dashboard/merge_requests'),
-
-),
+urls = {
+    'include': 'colab_gitlab.urls',
+    'namespace': 'gitlab',
+    'prefix': 'gitlab',
 }
 
+menu_title = _('Code')
 
-#  dpaste:
-#    dependencies:
-#      - 'mptt'
-#    urls:
-#      include: 'dpaste.urls.dpaste'
-#      prefix:  '^paste/'
-#      namespace: 'dpaste'
-#    menu:
-#      title: 'Dpaste'
-#      links:
-#        Public Projects:  '/paste'
-#      auth_links:
-#        Profile: '/projects'
-#        New Project: '/projects/new'
+url = colab_url_factory('gitlab')
+
+menu_urls = (
+    url(display=_('Profile'), viewname='gitlab', kwargs={'path': '/profile/anonymous'}, auth=False),
+    url(display=_('Profile Two'), viewname='gitlab', kwargs={'path': '/profile/logged'}, auth=True),
+)
